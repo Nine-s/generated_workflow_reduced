@@ -40,7 +40,7 @@ STAR_ALIGN(TRIMGALORE.out.preprocessed_reads, STAR_GENOMEGENERATE.out.index, par
 // SALMON_GENOMEGENERATE(params.genome, params.transcripts_fasta)
 // SALMON_QUANT(TRIMGALORE.out.preprocessed_reads, SALMON_GENOMEGENERATE.out.index)
 // TXIMPORT(MERGE_RESULTS_SALMON.out.gathered_bam, GFFREAD_TX2GENE.out.tx2gene)
-MERGE_RESULTS_SALMON(SALMON_QUANT.out.transcripts.collect())
+//MERGE_RESULTS_SALMON(SALMON_QUANT.out.transcripts.collect())
 SAMTOOLS(STAR_ALIGN.out.sam)
 // MULTIQC(SALMON_QUANT.out.json_info.collect(), TRIMGALORE.out.log.collect(), STAR_ALIGN.out.log_final.collect(), FASTQC.out.zip.collect())
 // DRIMSEQ_FILTER(TXIMPORT.out.txi_dtu, TXIMPORT.out.tximport_tx2gene, params.csv_input, params.min_samps_gene_expr, params.min_samps_feature_expr, params.min_samps_feature_prop, params.min_feature_expr, params.min_feature_prop, params.min_gene_expr)
