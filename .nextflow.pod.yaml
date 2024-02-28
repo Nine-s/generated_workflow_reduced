@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: silly-jennings
+  name: gigantic-stallman
   namespace: default
-  labels: {app: nextflow, runName: silly-jennings}
+  labels: {app: nextflow, runName: gigantic-stallman}
 spec:
   restartPolicy: Never
   containers:
-  - name: silly-jennings
+  - name: gigantic-stallman
     image: nextflow/nextflow:23.09.3-edge
-    command: [/bin/bash, -c, source /etc/nextflow/init.sh; nextflow run Nine-s/rnasplice_generated_modified_reduced_
-        -name silly-jennings -resume last -r master]
+    command: [/bin/bash, -c, source /etc/nextflow/init.sh; nextflow run Nine-s/generated_workflow_reduced
+        -name gigantic-stallman -resume last -r master]
     env:
     - {name: NXF_WORK, value: /workspace/ninon/work}
     - {name: NXF_ASSETS, value: /workspace/projects}
@@ -25,4 +25,4 @@ spec:
   - name: vol-1
     persistentVolumeClaim: {claimName: nextflow-ninon}
   - name: vol-2
-    configMap: {name: nf-config-8921f2f0}
+    configMap: {name: nf-config-6fb8f126}
