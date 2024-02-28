@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: pensive-tuckerman
+  name: goofy-bell
   namespace: default
-  labels: {app: nextflow, runName: pensive-tuckerman}
+  labels: {app: nextflow, runName: goofy-bell}
 spec:
   restartPolicy: Never
   containers:
-  - name: pensive-tuckerman
+  - name: goofy-bell
     image: nextflow/nextflow:23.09.3-edge
-    command: [/bin/bash, -c, source /etc/nextflow/init.sh; nextflow run Nine-s/generated_workflow_reduced
-        -name pensive-tuckerman -resume last -r master]
+    command: [/bin/bash, -c, source /etc/nextflow/init.sh; nextflow run Nine-s/rnasplice_generated_modified_reduced_
+        -name goofy-bell -resume last -r master]
     env:
     - {name: NXF_WORK, value: /workspace/ninon/work}
     - {name: NXF_ASSETS, value: /workspace/projects}
@@ -25,4 +25,4 @@ spec:
   - name: vol-1
     persistentVolumeClaim: {claimName: nextflow-ninon}
   - name: vol-2
-    configMap: {name: nf-config-ce8f1c16}
+    configMap: {name: nf-config-72725cf3}
