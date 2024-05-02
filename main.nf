@@ -29,19 +29,20 @@ workflow{
             .splitCsv(header: true, sep: ',')
             .map {row -> tuple(row.sample, [row.path_r1, row.path_r2], row.condition)}
             .view()
-        
+             
 TRIMGALORE(read_pairs_ch)
-CUSTOM_GETCHROMSIZES(params.genome)
-FASTQC(read_pairs_ch)
 STAR_GENOMEGENERATE(params.genome, params.annotation_gtf)
 STAR_ALIGN(TRIMGALORE.out.preprocessed_reads, STAR_GENOMEGENERATE.out.index, params.annotation_gtf)
+SAMTOOLS(STAR_ALIGN.out.sam)
+
+FASTQC(read_pairs_ch)
+CUSTOM_GETCHROMSIZES(params.genome)
 GFFREAD_TX2GENE(params.annotation_gtf)
 DEXSEQ_ANNOTATION(params.annotation_gtf)
 SALMON_GENOMEGENERATE(params.genome, params.transcripts_fasta)
 SALMON_QUANT(TRIMGALORE.out.preprocessed_reads, SALMON_GENOMEGENERATE.out.index)
 MERGE_RESULTS_SALMON(SALMON_QUANT.out.transcripts.collect())
 TXIMPORT(MERGE_RESULTS_SALMON.out.gathered_bam, GFFREAD_TX2GENE.out.tx2gene)
-SAMTOOLS(STAR_ALIGN.out.sam)
 MULTIQC(SALMON_QUANT.out.json_info.collect(), TRIMGALORE.out.log.collect(), STAR_ALIGN.out.log_final.collect(), FASTQC.out.zip.collect())
 DRIMSEQ_FILTER(TXIMPORT.out.txi_dtu, TXIMPORT.out.tximport_tx2gene, params.csv_input, params.min_samps_gene_expr, params.min_samps_feature_expr, params.min_samps_feature_prop, params.min_feature_expr, params.min_feature_prop, params.min_gene_expr)
 DEXSEQ_DTU(DRIMSEQ_FILTER.out.drimseq_samples_tsv, DRIMSEQ_FILTER.out.drimseq_counts_tsv, params.csv_contrastsheet, params.n_dexseq_plot)
@@ -54,4 +55,5 @@ MERGE_RESULTS_DEXSEQ(DEXSEQ_COUNT.out.dexseq_clean_txt.collect())
 BEDGRAPH_TO_BIGWIG_FORWARD(BEDCLIP_FORWARD.out.bedgraph, CUSTOM_GETCHROMSIZES.out.sizes)
 DEXSEQ_EXON(MERGE_RESULTS_DEXSEQ.out.clean_counts, DEXSEQ_ANNOTATION.out.gff, params.csv_input, params.csv_contrastsheet, params.n_dexseq_plot)
 
+}
 }
